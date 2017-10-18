@@ -1,0 +1,154 @@
+﻿Version=7.01
+NumberOfModules=6
+Module1=Starter
+Module2=loginscreen
+Module3=afterlogin
+Module4=moneymanagment
+Module5=sales
+Module6=types
+Build1=Sales,b4a_Sales.example
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="19"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~'End of default text.~\n~
+IconFile=
+NumberOfFiles=1
+File1=avatar.png
+NumberOfLibraries=2
+Library1=core
+Library2=randomaccessfile
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: B4A Example
+	#VersionCode: 1
+	#VersionName: 
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: landscape
+	#CanInstallToExternalStorage: False
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: False
+	#IncludeTitle: True
+#End Region
+
+Sub Process_Globals
+	'These global variables will be declared once when the application starts.
+	'These variables can be accessed from all modules.
+	Public currentuser As user
+	Public file1 As RandomAccessFile
+End Sub
+
+Sub Globals
+	'These global variables will be redeclared each time the activity is created.
+	'These variables can only be accessed from this module.
+	Dim screen As Panel
+	Dim usrnmfield As EditText
+	Dim pswdfield As EditText
+	Dim btn As Button
+	Dim buttonalrd As Button
+	
+	
+	Dim usersave As String
+	Dim pswdsave As String
+	
+	
+	
+	Public loginscr As loginscreen
+	
+End Sub
+
+Public Sub Get_loginscrn As loginscreen
+	Return loginscr
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	'Do not forget to load the layout file created with the visual designer. For example:
+	'Activity.LoadLayout("Layout1")
+	screen.Initialize("screen")
+	usrnmfield.Initialize("usrfield")
+	pswdfield.Initialize("pswdfield")
+	buttonalrd.Initialize("alredy")
+	btn.Initialize("btnfild")
+	currentuser.Initialize
+	currentuser.feed.Initialize
+'	
+	
+	
+	If File.Exists(File.DirDefaultExternal,"userninfo.dat") Then
+		Dim filetemp As RandomAccessFile
+		filetemp.Initialize(File.DirDefaultExternal,"userninfo.dat",True)
+		Dim tempuser As user
+		tempuser = filetemp.ReadObject(filetemp.CurrentPosition)
+		currentuser = tempuser
+	End If
+	
+	BuildUI
+
+End Sub
+
+Sub BuildUI
+	Activity.AddView(screen,0,0,100%x,100%y)
+	screen.Color = Colors.RGB(255, 108, 0)
+	
+	screen.AddView(usrnmfield,35%x,20%y,30%x,10%y)
+	screen.AddView(pswdfield,35%x,usrnmfield.Top + 15%y,30%x,10%y)
+	usrnmfield.Color = Colors.White
+	pswdfield.Color = Colors.White	
+	usrnmfield.TextColor = Colors.Black
+	pswdfield.TextColor = Colors.Black
+	usrnmfield.Hint = "Username"
+	pswdfield.Hint = "Password"
+	pswdfield.SingleLine = True
+	usrnmfield.SingleLine = True
+	
+	screen.AddView(btn,35%x,50%y,30%x,15%y)
+	btn.Color = Colors.White
+	btn.Text = "Submit"
+	btn.TextColor = Colors.Black
+
+	screen.AddView(buttonalrd,35%x,70%y,30%x,15%y)
+	buttonalrd.Color = Colors.White
+	buttonalrd.Text = "Already have and account? Click here!"
+	buttonalrd.TextColor = Colors.Black
+	
+End Sub
+
+ Public Sub rndmfiles
+	file1.Initialize(File.DirDefaultExternal,"userninfo.dat",False)	
+End Sub
+
+Sub Activity_Resume
+
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+
+End Sub
+
+Sub btnfild_Click
+	If usrnmfield.Text = ""  Or pswdfield.Text = "" Then
+		ToastMessageShow("Nothing entered",False)
+	Else
+		
+		rndmfiles
+		currentuser.loginname = usrnmfield.Text
+		currentuser.password = pswdfield.Text
+		currentuser.money = 0
+		file1.WriteObject(currentuser,False,file1.CurrentPosition)
+		file1.Close
+		ToastMessageShow("SUCCESSFULY REGISTERED!",False)
+		ShowLoginScreen
+	End If
+End Sub
+
+Sub alredy_Click
+	If File.Exists(File.DirDefaultExternal,"userninfo.dat") = True Then
+		ShowLoginScreen
+	End If
+End Sub
+
+Sub ShowLoginScreen
+	loginscr.Initialize
+	Activity.AddView(loginscr.wholescrn,0,0,100%x,100%y)
+End Sub
+Sub Balance
+	
+End Sub
