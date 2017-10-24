@@ -9,7 +9,7 @@ Sub Class_Globals
 	Dim textfield As EditText
 	Dim Deposit  As Button
 	Dim Withdraw As Button
-	
+	Dim historyadd As ActionHistory
 	
 End Sub
 
@@ -20,6 +20,7 @@ Public Sub Initialize
 	textfield.Initialize("text")
 	Deposit.Initialize("btn1")
 	Withdraw.Initialize("btn2")
+	
 End Sub
 
 Public Sub BuildMoneyManegmentUI
@@ -38,22 +39,18 @@ Sub btn1_Click
 		ToastMessageShow("Nothing entered",False)
 	Else
 		
-'		Dim filetemp As RandomAccessFile
-'		filetemp.Initialize(File.DirDefaultExternal,"userninfo.dat",True)
-'		
-'		Dim tempuser As user
-'		tempuser = filetemp.ReadObject(filetemp.CurrentPosition)
-'		
 		Public tmp As loginscreen = CallSub(Main,"Get_loginscrn")
 		
 		Main.currentuser.money = Main.currentuser.money + textfield.Text
     	tmp.afterloggin.accmoney
-'		filetemp.Close
 		Main.file1.Initialize(File.DirDefaultExternal,"userninfo.dat",False)
 		Main.file1.WriteObject(Main.currentuser,False,Main.file1.CurrentPosition)
 		Main.file1.Close
 		
 		screen.SendToBack
+		historyadd.Initialize
+		historyadd.Addmoneyinfo
+		
 		
 	End If
 End Sub
@@ -64,6 +61,9 @@ Sub btn2_Click
 	Else
 	Public tmp As loginscreen = CallSub(Main,"Get_loginscrn")
 	Main.currentuser.money = Main.currentuser.money - textfield.Text
+		If Main.currentuser.money < 0 Then
+			Main.currentuser.money = 0
+		End If
 	tmp.afterloggin.accmoney
 		Main.file1.Initialize(File.DirDefaultExternal,"userninfo.dat",False)
 		Main.file1.WriteObject(Main.currentuser,False,Main.file1.CurrentPosition)

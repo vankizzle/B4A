@@ -7,7 +7,7 @@ Sub Class_Globals
 	Public screen As Panel
 	Dim subscreen As Panel
 	Public saleslist As ScrollView
-
+	Public btnlist As List
 	
 
 End Sub
@@ -18,7 +18,8 @@ Public Sub Initialize
 screen.Initialize("screen")
 subscreen.Initialize("subscreen")
 saleslist.Initialize(-2)
-
+btnlist.Initialize
+UIbuild
 End Sub
 
 
@@ -31,22 +32,7 @@ Sub UIbuild
 End Sub
 
 
-Sub butnn_Click
-	
-'	If Main.currentuser.money > .Text Then
-'		Public tmp As loginscreen = CallSub(Main,"Get_loginscrn")
-'		Main.currentuser.money = Main.currentuser.money - salesprice.Text
-'		tmp.afterloggin.accmoney
-'			Main.file1.Initialize(File.DirDefaultExternal,"userninfo.dat",False)
-'			Main.file1.WriteObject(Main.currentuser,False,Main.file1.CurrentPosition)
-'			Main.file1.Close
-'		screen.SendToBack
-'	Else
-'		ToastMessageShow("Not enought money!",False)
-'		screen.SendToBack
-'	End If
-ToastMessageShow("ERRR",False)
-End Sub
+
 
 Sub Props
 	For i=0 To 5
@@ -79,12 +65,13 @@ Sub Props
 		salepnl.AddView(buybtn,40%x,0%y,15%x,15%y)
 		buybtn.Color = Colors.RGB(1, 174, 1)
 		buybtn.Text = "BUY"
+		buybtn.Tag = i
 		buybtn.TextSize = 20
 		buybtn.TextColor = Colors.Black
 		buybtn.Gravity = Gravity.CENTER
 		
 		saleslist.Panel.AddView(salepnl,0,0 + (15%y+5dip)*i,100%x,15%y)
-		
+		btnlist.Add(salep)
 	Next
 	
 End Sub
@@ -93,4 +80,24 @@ Sub saleprice As Int
 	Dim salespriceint As Int
 	salespriceint = Rnd(200,5000)
 	Return salespriceint
+End Sub
+
+Sub butnn_Click
+	Dim tmpbtn As Button = Sender
+	Dim templbl As Label = btnlist.Get(tmpbtn.Tag)
+	
+	
+	If Main.currentuser.money > templbl.Text Then
+		Public tmp As loginscreen = CallSub(Main,"Get_loginscrn")
+		Main.currentuser.money = Main.currentuser.money - templbl.Text
+		tmp.afterloggin.accmoney
+		Main.file1.Initialize(File.DirDefaultExternal,"userninfo.dat",False)
+		Main.file1.WriteObject(Main.currentuser,False,Main.file1.CurrentPosition)
+		Main.file1.Close
+		screen.SendToBack
+	Else
+		ToastMessageShow("Not enought money!",False)
+		screen.SendToBack
+	End If
+	'ToastMessageShow("ERRR",False)
 End Sub

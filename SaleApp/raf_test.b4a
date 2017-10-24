@@ -1,19 +1,23 @@
 ﻿Version=7.01
-NumberOfModules=6
+NumberOfModules=9
 Module1=Starter
 Module2=loginscreen
 Module3=afterlogin
-Module4=moneymanagment
-Module5=sales
-Module6=types
+Module4=ActivitiesUtilities
+Module5=types
+Module6=OtheActivitiesForUser
+Module7=moneymanagment
+Module8=sales
+Module9=ActionHistory
 Build1=Sales,b4a_Sales.example
 ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="19"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~'End of default text.~\n~
 IconFile=
 NumberOfFiles=1
 File1=avatar.png
-NumberOfLibraries=2
+NumberOfLibraries=3
 Library1=core
 Library2=randomaccessfile
+Library3=tabhostextras
 @EndOfDesignText@
 #Region  Project Attributes 
 	#ApplicationLabel: B4A Example
@@ -25,8 +29,8 @@ Library2=randomaccessfile
 #End Region
 
 #Region  Activity Attributes 
-	#FullScreen: False
-	#IncludeTitle: True
+	#FullScreen:True
+	#IncludeTitle:  False
 #End Region
 
 Sub Process_Globals
@@ -52,12 +56,14 @@ Sub Globals
 	
 	
 	Public loginscr As loginscreen
-	
+'	Public history1 As ActionHistory
 End Sub
 
 Public Sub Get_loginscrn As loginscreen
 	Return loginscr
 End Sub
+
+
 
 Sub Activity_Create(FirstTime As Boolean)
 	'Do not forget to load the layout file created with the visual designer. For example:

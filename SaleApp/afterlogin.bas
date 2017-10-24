@@ -13,12 +13,21 @@ Sub Class_Globals
 	Dim accountrank As Label
 	Public accountbalance As Label
 	Dim accountbalance1 As Label
-	Public addmoney As Button
 	
+	Public addmoney As Button
 	Dim moneymang As moneymanagment
 	
 	Dim Sales1 As Button
 	Dim salesmang As sales
+	
+	Dim history As Button
+	Dim histoymng As ActionHistory
+	
+	Dim AddText As Label
+	Dim AdTimer As Timer
+	
+	Dim actions As ActivitiesUtilities
+	Dim other_activities As OtheActivitiesForUser
 End Sub
 
 'Initializes the object. You can add parameters to this method if needed.
@@ -36,7 +45,15 @@ Public Sub Initialize(ck As Object)
 	Sales1.Initialize("Sales1")
 	salesmang.Initialize
 	
+	history.Initialize("Histor")
+	histoymng.Initialize
 	
+	AddText.Initialize("movingadd")
+	AdTimer.Initialize("Timer1",5)
+	AdTimer.Enabled = False
+	
+	actions.Initialize
+	other_activities.Initialize
 End Sub
 
  Public Sub UIbuild
@@ -64,28 +81,24 @@ End Sub
 	subwholescr.AddView(accountbalance,2%x,45%y,20%x,15%y)
 	accountbalance.TextSize = 30 
 	accountbalance.Text = "Balance:" & CRLF & tempuser.money
+	
 	UIaddons
+
+	subwholescr.AddView(AddText,20%x,0,80%x,15%y)
+	AddText.Text = "WELCOME -> "  & Main.currentuser.loginname & " <-"
+'	AddText.Gravity = Gravity.CENTER
+	AddText.TextSize = 40
+	AddText.TextColor = Colors.Black
+		
+	AdTimer.Enabled = True
 	
 	
-	wholescreen.AddView(moneymang.screen,0,0,100%x,100%y)
-	moneymang.screen.SendToBack
-	moneymang.BuildMoneyManegmentUI
 	
-	wholescreen.AddView(salesmang.screen,0,0,100%x,100%y)
-	salesmang.screen.SendToBack
-	salesmang.UIbuild
 End Sub
 
 Sub UIaddons
-	subwholescr.AddView(addmoney,20%x,15%y,20%x,10%y)
-	addmoney.Color = Colors.White
-	addmoney.Text = "Cash managment"
-	addmoney.TextColor = Colors.Black
-	
-	subwholescr.AddView(Sales1,40%x,15%y,20%x,10%y)
-	Sales1.Color = Colors.White
-	Sales1.Text = "Sales"
-	Sales1.TextColor = Colors.Black
+	subwholescr.AddView(actions.TabHost1,20%x - 4dip,15%y,80%x + 8dip,100%y)
+'	subwholescr.AddView(other_activities.TabHost2,0,60%y,20%x,20%y)
 End Sub
 
 Sub Addsum_Click
@@ -94,6 +107,10 @@ End Sub
 
 Sub Sales1_Click
 	ShowSalesManagment
+End Sub
+
+Sub Histor_Click
+	ShowHistory
 End Sub
 
 Public Sub accmoney 
@@ -106,6 +123,27 @@ End Sub
 
 Sub ShowSalesManagment
 	salesmang.screen.BringToFront
+End Sub
+
+Sub ShowHistory As Boolean
+	histoymng.BuildUI
+	Return True
+End Sub
+
+Sub HideHistory As Boolean
+	histoymng.screen.RemoveAllViews
+	Return True
+End Sub
+
+Sub Timer1_Tick
+	
+		AddText.Left = AddText.Left - 1
+		
+	If AddText.Left < avataricon.Left + avataricon.Width Then
+			AddText.Left = 100%x
+		End If
+	
+	
 End Sub
 
 Sub Fake_Click
